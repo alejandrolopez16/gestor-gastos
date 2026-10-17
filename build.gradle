@@ -29,8 +29,8 @@ test {
         showCauses true
         showStackTraces true
         exceptionFormat "full"
-        finalizedBy jacocoTestReport
     }
+    finalizedBy jacocoTestReport
 }
 
 jacocoTestReport{
