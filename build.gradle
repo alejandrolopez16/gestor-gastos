@@ -29,8 +29,8 @@ test {
         showCauses true
         showStackTraces true
         exceptionFormat "full"
-        finalizedBy jacocoTestReport
     }
+    finalizedBy jacocoTestReport
 }
 
 jacocoTestReport{
@@ -39,11 +39,18 @@ jacocoTestReport{
         xml.required=true
         html.required=true
     }
+    classDirectories.setFrom(files(sourceSets.main.output.classesDirs.collect {
+        fileTree(dir: it, exclude: [
+                'com/gestorgastos/Main*.class',
+                'com/gestorgastos/web/**'
+        ])
+    }))
 }
 
 sonar {
   properties {
     property "sonar.projectKey", "alejandrolopez16_gestor-gastos"
     property "sonar.organization", "alejandrolopez16"
+    property "sonar.coverage.exclusions", "**/Main.java,**/web/**"
   }
 }
