@@ -1,5 +1,7 @@
 plugins {
     id 'application'
+    id 'jacoco'
+    id "org.sonarqube" version "7.5.0.8588"
 }
 
 repositories {
@@ -27,5 +29,21 @@ test {
         showCauses true
         showStackTraces true
         exceptionFormat "full"
+        finalizedBy jacocoTestReport
     }
+}
+
+jacocoTestReport{
+    dependsOn test
+    reports{
+        xml.required=true
+        html.required=true
+    }
+}
+
+sonar {
+  properties {
+    property "sonar.projectKey", "alejandrolopez16_gestor-gastos"
+    property "sonar.organization", "alejandrolopez16"
+  }
 }
