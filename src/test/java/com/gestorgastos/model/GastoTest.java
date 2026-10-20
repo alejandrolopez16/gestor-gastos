@@ -89,7 +89,12 @@ class GastoTest {
 
     @Test
     void noDebeSerIgualAUnObjetoDeOtroTipo() {
-        assertNotEquals("Almuerzo", gastoBase);
+
+        // Arrange: variable de tipo Object que en realidad es un String (rama instanceof)
+        Object otroTipo = "Almuerzo";
+
+        // Assert
+        assertNotEquals(gastoBase, otroTipo);
     }
 
     @Test
