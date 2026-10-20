@@ -58,7 +58,12 @@ class GastoTest {
 
     @Test
     void debeSerIgualAsiMismo() {
-        assertEquals(gastoBase, gastoBase);
+
+        // Arrange: otra variable que apunta al mismo objeto (rama this == o)
+        Gasto mismaReferencia = gastoBase;
+
+        // Assert
+        assertEquals(gastoBase, mismaReferencia);
     }
 
     @Test
