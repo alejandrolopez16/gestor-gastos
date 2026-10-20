@@ -22,4 +22,10 @@
   "monto" : 60000,
   "categoria" : "ENTRETENIMIENTO",
   "fecha" : [ 2026, 8, 21 ]
+}, {
+  "id" : 6,
+  "descripcion" : "Recarga de civica",
+  "monto" : 70000,
+  "categoria" : "TRANSPORTE",
+  "fecha" : [ 2026, 10, 20 ]
 } ]
