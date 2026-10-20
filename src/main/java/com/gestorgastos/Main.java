@@ -16,6 +16,9 @@ import java.util.Scanner;
 
 public class Main {
 
+    private static final String SEPARADOR = "------------------------------";
+    private static final String ETIQUETA_DESCRIPCION = "Descripción: ";
+
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -62,20 +65,20 @@ public class Main {
                         break;
 
                     case 0:
-                        System.out.println("\n¡Hasta luego!");
+                        imprimir("\n¡Hasta luego!");
                         break;
 
                     default:
-                        System.out.println("\nOpción no válida.");
+                        imprimir("\nOpción no válida.");
                 }
 
             } catch (IllegalArgumentException e) {
 
-                System.out.println("\nError: " + e.getMessage());
+                imprimir("\nError: " + e.getMessage());
 
             } catch (Exception e) {
 
-                System.out.println(
+                imprimir(
                         "\nOcurrió un error: " + e.getMessage()
                 );
             }
@@ -87,32 +90,32 @@ public class Main {
 
     private static void mostrarMenu() {
 
-        System.out.println("\n==============================");
-        System.out.println("       GESTOR DE GASTOS");
-        System.out.println("==============================");
-        System.out.println("1. Registrar gasto");
-        System.out.println("2. Listar gastos");
-        System.out.println("3. Buscar gasto por ID");
-        System.out.println("4. Eliminar gasto");
-        System.out.println("5. Calcular total");
-        System.out.println("6. Calcular total por categoría");
-        System.out.println("0. Salir");
-        System.out.println("==============================");
+        imprimir("\n==============================");
+        imprimir("       GESTOR DE GASTOS");
+        imprimir("==============================");
+        imprimir("1. Registrar gasto");
+        imprimir("2. Listar gastos");
+        imprimir("3. Buscar gasto por ID");
+        imprimir("4. Eliminar gasto");
+        imprimir("5. Calcular total");
+        imprimir("6. Calcular total por categoría");
+        imprimir("0. Salir");
+        imprimir("==============================");
     }
 
     private static void registrarGasto(GestorGastos gestor) {
 
-        System.out.println("\n--- Registrar gasto ---");
+        imprimir("\n--- Registrar gasto ---");
 
-        System.out.print("Descripción: ");
+        imprimirSinSalto(ETIQUETA_DESCRIPCION);
         String descripcion = scanner.nextLine();
 
-        System.out.print("Monto: ");
+        imprimirSinSalto("Monto: ");
         String valor = scanner.nextLine();
 
         BigDecimal monto = new BigDecimal(valor);
 
-        System.out.print("Categoría: ");
+        imprimirSinSalto("Categoría: ");
         Categoria categoria = seleccionarCategoria(scanner);
 
         LocalDate fecha = leerFecha();
@@ -124,23 +127,23 @@ public class Main {
                 fecha
         );
 
-        System.out.println("\nGasto registrado correctamente:");
-        System.out.println(gasto);
+        imprimir("\nGasto registrado correctamente:");
+        imprimir(gasto.toString());
     }
 
     private static Categoria seleccionarCategoria(Scanner scanner) {
 
-        System.out.println("\n--- Categorías ---");
+        imprimir("\n--- Categorías ---");
 
         Categoria[] categorias = Categoria.values();
 
         for (int i = 0; i < categorias.length; i++) {
-            System.out.println(
+            imprimir(
                     (i + 1) + ". " + categorias[i]
             );
         }
 
-        System.out.print("Seleccione una categoría: ");
+        imprimirSinSalto("Seleccione una categoría: ");
 
         int opcion = Integer.parseInt(scanner.nextLine());
 
@@ -155,39 +158,26 @@ public class Main {
 
     private static void listarGastos(GestorGastos gestor) {
 
-        System.out.println("\n--- Lista de gastos ---");
+        imprimir("\n--- Lista de gastos ---");
 
         List<Gasto> gastos = gestor.listarGastos();
 
         if (gastos.isEmpty()) {
-            System.out.println("No hay gastos registrados.");
+            imprimir("No hay gastos registrados.");
             return;
         }
 
         for (Gasto gasto : gastos) {
 
-            System.out.println("------------------------------");
-            System.out.println("ID: " + gasto.getId());
-            System.out.println(
-                    "Descripción: " + gasto.getDescripcion()
-            );
-            System.out.println(
-                    "Monto: $" + gasto.getMonto()
-            );
-            System.out.println(
-                    "Categoría: " + gasto.getCategoria()
-            );
-            System.out.println(
-                    "Fecha: " + gasto.getFecha()
-            );
+            imprimirGasto(gasto);
         }
 
-        System.out.println("------------------------------");
+        imprimir(SEPARADOR);
     }
 
     private static void buscarGastoPorId(GestorGastos gestor) {
 
-        System.out.println("\n--- Buscar gasto ---");
+        imprimir("\n--- Buscar gasto ---");
 
         int id = leerEntero("Ingrese el ID: ");
 
@@ -198,26 +188,13 @@ public class Main {
 
             Gasto gasto = resultado.get();
 
-            System.out.println("\nGasto encontrado:");
-            System.out.println("------------------------------");
-            System.out.println("ID: " + gasto.getId());
-            System.out.println(
-                    "Descripción: " + gasto.getDescripcion()
-            );
-            System.out.println(
-                    "Monto: $" + gasto.getMonto()
-            );
-            System.out.println(
-                    "Categoría: " + gasto.getCategoria()
-            );
-            System.out.println(
-                    "Fecha: " + gasto.getFecha()
-            );
-            System.out.println("------------------------------");
+            imprimir("\nGasto encontrado:");
+            imprimirGasto(gasto);
+            imprimir(SEPARADOR);
 
         } else {
 
-            System.out.println(
+            imprimir(
                     "\nNo se encontró un gasto con el ID " + id + "."
             );
         }
@@ -225,7 +202,7 @@ public class Main {
 
     private static void eliminarGasto(GestorGastos gestor) {
 
-        System.out.println("\n--- Eliminar gasto ---");
+        imprimir("\n--- Eliminar gasto ---");
 
         int id = leerEntero(
                 "Ingrese el ID del gasto: "
@@ -236,13 +213,13 @@ public class Main {
 
         if (eliminado) {
 
-            System.out.println(
+            imprimir(
                     "Gasto eliminado correctamente."
             );
 
         } else {
 
-            System.out.println(
+            imprimir(
                     "No existe un gasto con el ID " + id + "."
             );
         }
@@ -250,11 +227,11 @@ public class Main {
 
     private static void calcularTotal(GestorGastos gestor) {
 
-        System.out.println("\n--- Total de gastos ---");
+        imprimir("\n--- Total de gastos ---");
 
         BigDecimal total = gestor.calcularTotal();
 
-        System.out.println(
+        imprimir(
                 "Total gastado: $" + total
         );
     }
@@ -262,11 +239,11 @@ public class Main {
     private static void calcularTotalPorCategoria(
             GestorGastos gestor) {
 
-        System.out.println(
+        imprimir(
                 "\n--- Total por categoría ---"
         );
 
-        System.out.print(
+        imprimirSinSalto(
                 "Ingrese la categoría: "
         );
 
@@ -277,7 +254,7 @@ public class Main {
                         categoria
                 );
 
-        System.out.println(
+        imprimir(
                 "Total en " + categoria + ": $" + total
         );
     }
@@ -286,7 +263,7 @@ public class Main {
 
         while (true) {
 
-            System.out.print(
+            imprimirSinSalto(
                     "Fecha (YYYY-MM-DD): "
             );
 
@@ -298,7 +275,7 @@ public class Main {
 
             } catch (DateTimeParseException e) {
 
-                System.out.println(
+                imprimir(
                         "Formato inválido. " +
                                 "Ejemplo: 2026-08-17"
                 );
@@ -310,7 +287,7 @@ public class Main {
 
         while (true) {
 
-            System.out.print(mensaje);
+            imprimirSinSalto(mensaje);
 
             String valor = scanner.nextLine();
 
@@ -320,10 +297,29 @@ public class Main {
 
             } catch (NumberFormatException e) {
 
-                System.out.println(
+                imprimir(
                         "Ingrese un número válido."
                 );
             }
         }
+    }
+
+    private static void imprimirGasto(Gasto gasto) {
+
+        imprimir(SEPARADOR);
+        imprimir("ID: " + gasto.getId());
+        imprimir(ETIQUETA_DESCRIPCION + gasto.getDescripcion());
+        imprimir("Monto: $" + gasto.getMonto());
+        imprimir("Categoría: " + gasto.getCategoria());
+        imprimir("Fecha: " + gasto.getFecha());
+    }
+
+    // Único punto de salida por consola de la aplicación
+    private static void imprimir(String mensaje) {
+        System.out.println(mensaje);
+    }
+
+    private static void imprimirSinSalto(String mensaje) {
+        System.out.print(mensaje);
     }
 }

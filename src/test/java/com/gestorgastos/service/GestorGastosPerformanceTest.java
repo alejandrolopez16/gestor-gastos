@@ -4,7 +4,8 @@ import com.gestorgastos.model.Categoria;
 import com.gestorgastos.model.Gasto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import com.gestorgastos.service.GestorGastosTest.FakeGastoRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,6 +13,17 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GestorGastosPerformanceTest {
+
+    private static final Logger LOG =
+            LoggerFactory.getLogger(GestorGastosPerformanceTest.class);
+
+    private static void registrar(String mensaje) {
+        LOG.info("{}", mensaje);
+    }
+
+    private static void registrarError(String mensaje) {
+        LOG.error("{}", mensaje);
+    }
 
     private GestorGastos gestor1000;
     private GestorGastos gestor10000;
@@ -92,13 +104,13 @@ class GestorGastosPerformanceTest {
 
                 long fin = System.nanoTime();
 
-                suma += (fin - inicio);
+                suma += (double) (fin - inicio);
                 ejecucionesExitosas++;
 
             } catch (Exception e) {
                 excepciones++;
 
-                System.err.println(
+                registrarError(
                         "Excepción en calcularTotalPorCategoria(): "
                                 + e.getMessage()
                 );
@@ -134,13 +146,13 @@ class GestorGastosPerformanceTest {
 
                 long fin = System.nanoTime();
 
-                suma += (fin - inicio);
+                suma += (double) (fin - inicio);
                 ejecucionesExitosas++;
 
             } catch (Exception e) {
                 excepciones++;
 
-                System.err.println(
+                registrarError(
                         "Excepción en calcularTotal(): "
                                 + e.getMessage()
                 );
@@ -181,13 +193,13 @@ class GestorGastosPerformanceTest {
 
                 long fin = System.nanoTime();
 
-                suma += (fin - inicio);
+                suma += (double) (fin - inicio);
                 ejecucionesExitosas++;
 
             } catch (Exception e) {
                 excepciones++;
 
-                System.err.println(
+                registrarError(
                         "Excepción en registrarGasto(): "
                                 + e.getMessage()
                 );
@@ -228,7 +240,7 @@ class GestorGastosPerformanceTest {
 
             } catch (Exception e) {
                 excepciones++;
-                System.err.println(
+                registrarError(
                         "Error en calcularTotal(): "
                                 + e.getMessage()
                 );
@@ -236,7 +248,7 @@ class GestorGastosPerformanceTest {
 
             long fin = System.nanoTime();
 
-            suma += (fin - inicio);
+            suma += (double) (fin - inicio);
         }
 
         double tiempoTotalSegundos =
@@ -274,7 +286,7 @@ class GestorGastosPerformanceTest {
 
             } catch (Exception e) {
                 excepciones++;
-                System.err.println(
+                registrarError(
                         "Error en calcularTotalPorCategoria(): "
                                 + e.getMessage()
                 );
@@ -282,7 +294,7 @@ class GestorGastosPerformanceTest {
 
             long fin = System.nanoTime();
 
-            suma += (fin - inicio);
+            suma += (double) (fin - inicio);
         }
 
         double tiempoTotalSegundos =
@@ -323,7 +335,7 @@ class GestorGastosPerformanceTest {
 
             } catch (Exception e) {
                 excepciones++;
-                System.err.println(
+                registrarError(
                         "Error en registrarGasto(): "
                                 + e.getMessage()
                 );
@@ -331,7 +343,7 @@ class GestorGastosPerformanceTest {
 
             long fin = System.nanoTime();
 
-            suma += (fin - inicio);
+            suma += (double) (fin - inicio);
         }
 
         double tiempoTotalSegundos =
@@ -379,7 +391,7 @@ class GestorGastosPerformanceTest {
         assertEquals(0, resultado10000.excepciones());
         assertEquals(0, resultado100000.excepciones());
 
-        System.out.println(
+        registrar(
                 "Registrar gasto - 1.000 registros: "
                         + resultado1000.tiempoPromedio()
                         + " ms | Ejecuciones: "
@@ -388,7 +400,7 @@ class GestorGastosPerformanceTest {
                         + resultado1000.excepciones()
         );
 
-        System.out.println(
+        registrar(
                 "Registrar gasto - 10.000 registros: "
                         + resultado10000.tiempoPromedio()
                         + " ms | Ejecuciones: "
@@ -397,7 +409,7 @@ class GestorGastosPerformanceTest {
                         + resultado10000.excepciones()
         );
 
-        System.out.println(
+        registrar(
                 "Registrar gasto - 100.000 registros: "
                         + resultado100000.tiempoPromedio()
                         + " ms | Ejecuciones: "
@@ -435,7 +447,7 @@ class GestorGastosPerformanceTest {
         assertEquals(0, resultado10000.excepciones());
         assertEquals(0, resultado100000.excepciones());
 
-        System.out.println(
+        registrar(
                 "Calcular total - 1.000 registros: "
                         + resultado1000.tiempoPromedio()
                         + " ms | Ejecuciones: "
@@ -444,7 +456,7 @@ class GestorGastosPerformanceTest {
                         + resultado1000.excepciones()
         );
 
-        System.out.println(
+        registrar(
                 "Calcular total - 10.000 registros: "
                         + resultado10000.tiempoPromedio()
                         + " ms | Ejecuciones: "
@@ -453,7 +465,7 @@ class GestorGastosPerformanceTest {
                         + resultado10000.excepciones()
         );
 
-        System.out.println(
+        registrar(
                 "Calcular total - 100.000 registros: "
                         + resultado100000.tiempoPromedio()
                         + " ms | Ejecuciones: "
@@ -491,7 +503,7 @@ class GestorGastosPerformanceTest {
         assertEquals(0, resultado10000.excepciones());
         assertEquals(0, resultado100000.excepciones());
 
-        System.out.println(
+        registrar(
                 "Total por categoría - 1.000 registros: "
                         + resultado1000.tiempoPromedio()
                         + " ms | Ejecuciones: "
@@ -500,7 +512,7 @@ class GestorGastosPerformanceTest {
                         + resultado1000.excepciones()
         );
 
-        System.out.println(
+        registrar(
                 "Total por categoría - 10.000 registros: "
                         + resultado10000.tiempoPromedio()
                         + " ms | Ejecuciones: "
@@ -509,7 +521,7 @@ class GestorGastosPerformanceTest {
                         + resultado10000.excepciones()
         );
 
-        System.out.println(
+        registrar(
                 "Total por categoría - 100.000 registros: "
                         + resultado100000.tiempoPromedio()
                         + " ms | Ejecuciones: "
@@ -552,7 +564,7 @@ class GestorGastosPerformanceTest {
         assertEquals(0, resultado10000.excepciones());
         assertEquals(0, resultado100000.excepciones());
 
-        System.out.println(
+        registrar(
                 "Calcular total - 1.000 registros: "
                         + resultado1000.throughput()
                         + " ops/s | Ejecuciones: "
@@ -560,7 +572,7 @@ class GestorGastosPerformanceTest {
                         + "/" + ejecucionesEsperadas
         );
 
-        System.out.println(
+        registrar(
                 "Calcular total - 10.000 registros: "
                         + resultado10000.throughput()
                         + " ops/s | Ejecuciones: "
@@ -568,7 +580,7 @@ class GestorGastosPerformanceTest {
                         + "/" + ejecucionesEsperadas
         );
 
-        System.out.println(
+        registrar(
                 "Calcular total - 100.000 registros: "
                         + resultado100000.throughput()
                         + " ops/s | Ejecuciones: "
@@ -607,7 +619,7 @@ class GestorGastosPerformanceTest {
         assertEquals(0, resultado10000.excepciones());
         assertEquals(0, resultado100000.excepciones());
 
-        System.out.println(
+        registrar(
                 "Total por categoría - 1.000 registros: "
                         + resultado1000.throughput()
                         + " ops/s | Ejecuciones: "
@@ -615,7 +627,7 @@ class GestorGastosPerformanceTest {
                         + "/" + ejecucionesEsperadas
         );
 
-        System.out.println(
+        registrar(
                 "Total por categoría - 10.000 registros: "
                         + resultado10000.throughput()
                         + " ops/s | Ejecuciones: "
@@ -623,7 +635,7 @@ class GestorGastosPerformanceTest {
                         + "/" + ejecucionesEsperadas
         );
 
-        System.out.println(
+        registrar(
                 "Total por categoría - 100.000 registros: "
                         + resultado100000.throughput()
                         + " ops/s | Ejecuciones: "
@@ -662,7 +674,7 @@ class GestorGastosPerformanceTest {
         assertEquals(0, resultado10000.excepciones());
         assertEquals(0, resultado100000.excepciones());
 
-        System.out.println(
+        registrar(
                 "Registrar gasto - 1.000 registros: "
                         + resultado1000.throughput()
                         + " ops/s | Ejecuciones: "
@@ -670,7 +682,7 @@ class GestorGastosPerformanceTest {
                         + "/" + ejecucionesEsperadas
         );
 
-        System.out.println(
+        registrar(
                 "Registrar gasto - 10.000 registros: "
                         + resultado10000.throughput()
                         + " ops/s | Ejecuciones: "
@@ -678,7 +690,7 @@ class GestorGastosPerformanceTest {
                         + "/" + ejecucionesEsperadas
         );
 
-        System.out.println(
+        registrar(
                 "Registrar gasto - 100.000 registros: "
                         + resultado100000.throughput()
                         + " ops/s | Ejecuciones: "

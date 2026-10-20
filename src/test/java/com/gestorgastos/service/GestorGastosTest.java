@@ -16,6 +16,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GestorGastosTest {
 
+    private static final BigDecimal MONTO_VALIDO = new BigDecimal("18000");
+    private static final LocalDate FECHA_VALIDA = LocalDate.of(2026, 8, 16);
+
     private FakeGastoRepository repository;
     private GestorGastos gestor;
 
@@ -32,9 +35,9 @@ class GestorGastosTest {
         //Act
         Gasto gasto = gestor.registrarGasto(
                 "Almuerzo",
-                new BigDecimal("18000"),
+                MONTO_VALIDO,
                 Categoria.ALIMENTACION,
-                LocalDate.of(2026, 8, 16)
+                FECHA_VALIDA
         );
 
         // Assert
@@ -73,14 +76,17 @@ class GestorGastosTest {
     @Test
     void noDebePermitirUnMontoMenorOIgualACero() {
 
+        // Arrange
+        BigDecimal montoNegativo = new BigDecimal("-5000");
+
         // Act
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
                 () -> gestor.registrarGasto(
                         "Almuerzo",
-                        new BigDecimal("-5000"),
+                        montoNegativo,
                         Categoria.ALIMENTACION,
-                        LocalDate.of(2026, 8, 16)
+                        FECHA_VALIDA
                 )
         );
 
@@ -98,7 +104,7 @@ class GestorGastosTest {
                         "Almuerzo",
                         null,
                         Categoria.ALIMENTACION,
-                        LocalDate.of(2026, 8, 16)
+                        FECHA_VALIDA
                 )
         );
 
@@ -114,9 +120,9 @@ class GestorGastosTest {
                 IllegalArgumentException.class,
                 () -> gestor.registrarGasto(
                         "",
-                        new BigDecimal("18000"),
+                        MONTO_VALIDO,
                         Categoria.ALIMENTACION,
-                        LocalDate.of(2026, 8, 16)
+                        FECHA_VALIDA
                 )
         );
 
@@ -132,9 +138,9 @@ class GestorGastosTest {
                 IllegalArgumentException.class,
                 () -> gestor.registrarGasto(
                         "    ",
-                        new BigDecimal("18000"),
+                        MONTO_VALIDO,
                         Categoria.ALIMENTACION,
-                        LocalDate.of(2026, 8, 16)
+                        FECHA_VALIDA
                 )
         );
 
@@ -150,9 +156,9 @@ class GestorGastosTest {
                 IllegalArgumentException.class,
                 () -> gestor.registrarGasto(
                         null,
-                        new BigDecimal("18000"),
+                        MONTO_VALIDO,
                         Categoria.ALIMENTACION,
-                        LocalDate.of(2026, 8, 16)
+                        FECHA_VALIDA
                 )
         );
 
@@ -169,9 +175,9 @@ class GestorGastosTest {
                 IllegalArgumentException.class,
                 () -> gestor.registrarGasto(
                         "Almuerzo",
-                        new BigDecimal("18000"),
+                        MONTO_VALIDO,
                         null,
-                        LocalDate.of(2026, 8, 16)
+                        FECHA_VALIDA
                 )
         );
 
@@ -185,16 +191,16 @@ class GestorGastosTest {
         // Act
         Gasto primerGasto = gestor.registrarGasto(
                 "Almuerzo",
-                new BigDecimal("18000"),
+                MONTO_VALIDO,
                 Categoria.ALIMENTACION,
-                LocalDate.of(2026, 8, 16)
+                FECHA_VALIDA
         );
 
         Gasto segundoGasto = gestor.registrarGasto(
                 "Transporte",
                 new BigDecimal("5000"),
                 Categoria.TRANSPORTE,
-                LocalDate.of(2026, 8, 16)
+                FECHA_VALIDA
         );
 
         // Assert
@@ -217,9 +223,9 @@ class GestorGastosTest {
         // Act
         Gasto nuevoGasto = gestor.registrarGasto(
                 "Almuerzo",
-                new BigDecimal("18000"),
+                MONTO_VALIDO,
                 Categoria.ALIMENTACION,
-                LocalDate.of(2026, 8, 16)
+                FECHA_VALIDA
         );
 
         // Assert
@@ -234,7 +240,7 @@ class GestorGastosTest {
                 IllegalArgumentException.class,
                 () -> gestor.registrarGasto(
                         "Almuerzo",
-                        new BigDecimal("18000"),
+                        MONTO_VALIDO,
                         Categoria.ALIMENTACION,
                         null
                 )
@@ -247,12 +253,12 @@ class GestorGastosTest {
     @Test
     void debePermitirUnaFechaValida() {
         //Arrange
-        LocalDate fecha = LocalDate.of(2026, 8, 16);
+        LocalDate fecha = FECHA_VALIDA;
 
         // Act
         Gasto gasto = gestor.registrarGasto(
                 "Almuerzo",
-                new BigDecimal("18000"),
+                MONTO_VALIDO,
                 Categoria.ALIMENTACION,
                 fecha
         );
@@ -267,9 +273,9 @@ class GestorGastosTest {
         // Arrange
         Gasto gasto = gestor.registrarGasto(
                 "Almuerzo",
-                new BigDecimal("18000"),
+                MONTO_VALIDO,
                 Categoria.ALIMENTACION,
-                LocalDate.of(2026, 8, 16)
+                FECHA_VALIDA
         );
 
         // Act
@@ -297,9 +303,9 @@ class GestorGastosTest {
 
         Gasto gasto = gestor.registrarGasto(
                 "Almuerzo",
-                new BigDecimal("18000"),
+                MONTO_VALIDO,
                 Categoria.ALIMENTACION,
-                LocalDate.of(2026, 8, 16)
+                FECHA_VALIDA
         );
 
         // Act
@@ -325,23 +331,23 @@ class GestorGastosTest {
         // Arrange
         gestor.registrarGasto(
                 "Almuerzo",
-                new BigDecimal("18000"),
+                MONTO_VALIDO,
                 Categoria.ALIMENTACION,
-                LocalDate.of(2026, 8, 16)
+                FECHA_VALIDA
         );
 
         gestor.registrarGasto(
                 "Transporte",
                 new BigDecimal("5000"),
                 Categoria.TRANSPORTE,
-                LocalDate.of(2026, 8, 16)
+                FECHA_VALIDA
         );
 
         gestor.registrarGasto(
                 "Café",
                 new BigDecimal("3500"),
                 Categoria.ALIMENTACION,
-                LocalDate.of(2026, 8, 16)
+                FECHA_VALIDA
         );
 
         // Act
@@ -375,16 +381,16 @@ class GestorGastosTest {
         // Arrange
         Gasto primerGasto = gestor.registrarGasto(
                 "Almuerzo",
-                new BigDecimal("18000"),
+                MONTO_VALIDO,
                 Categoria.ALIMENTACION,
-                LocalDate.of(2026, 8, 16)
+                FECHA_VALIDA
         );
 
         Gasto segundoGasto = gestor.registrarGasto(
                 "Transporte",
                 new BigDecimal("5000"),
                 Categoria.TRANSPORTE,
-                LocalDate.of(2026, 8, 16)
+                FECHA_VALIDA
         );
 
         // Act
@@ -412,23 +418,23 @@ class GestorGastosTest {
         // Arrange
         gestor.registrarGasto(
                 "Almuerzo",
-                new BigDecimal("18000"),
+                MONTO_VALIDO,
                 Categoria.ALIMENTACION,
-                LocalDate.of(2026, 8, 16)
+                FECHA_VALIDA
         );
 
         gestor.registrarGasto(
                 "Café",
                 new BigDecimal("3500"),
                 Categoria.ALIMENTACION,
-                LocalDate.of(2026, 8, 16)
+                FECHA_VALIDA
         );
 
         gestor.registrarGasto(
                 "Transporte",
                 new BigDecimal("5000"),
                 Categoria.TRANSPORTE,
-                LocalDate.of(2026, 8, 16)
+                FECHA_VALIDA
         );
 
         // Act
@@ -450,9 +456,9 @@ class GestorGastosTest {
         // Arrange
         gestor.registrarGasto(
                 "Almuerzo",
-                new BigDecimal("18000"),
+                MONTO_VALIDO,
                 Categoria.ALIMENTACION,
-                LocalDate.of(2026, 8, 16)
+                FECHA_VALIDA
         );
 
         // Act
